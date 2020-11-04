@@ -1,5 +1,6 @@
 package com.onirutla.submissiondicoding.ui.home.tv
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.onirutla.submissiondicoding.R
 import com.onirutla.submissiondicoding.data.model.TvEntity
+import com.onirutla.submissiondicoding.ui.detail.DetailActivity
 import kotlinx.android.synthetic.main.items_tv.view.*
 
 class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
@@ -34,13 +36,17 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
             with(itemView) {
                 tv_title.text = tv.title
                 tv_description.text = tv.description
-                Glide.with(itemView.context)
+                Glide.with(context)
                     .load(tv.image)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_broken_image_black)
                             .error(R.drawable.ic_error)
-                    )
-                    .into(tv_poster)
+                    ).into(tv_poster)
+                setOnClickListener {
+                    Intent(context, DetailActivity::class.java).apply {
+                        putExtra("tvId", tv.id)
+                    }.run { context.startActivity(this) }
+                }
             }
         }
     }
