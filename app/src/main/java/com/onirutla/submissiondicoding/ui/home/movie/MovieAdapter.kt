@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.onirutla.submissiondicoding.R
 import com.onirutla.submissiondicoding.data.model.MovieEntity
 import com.onirutla.submissiondicoding.ui.detail.DetailActivity
+import com.onirutla.submissiondicoding.ui.detail.DetailActivity.Companion.type_data
 import kotlinx.android.synthetic.main.items_movie.view.*
 
 
@@ -50,6 +51,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 setOnClickListener {
                     Intent(context, DetailActivity::class.java).apply {
                         putExtra("movieId", movie.id)
+                        putExtra(type_data, "movie")
                     }.run { context.startActivity(this) }
                 }
             }

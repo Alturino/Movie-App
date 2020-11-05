@@ -21,6 +21,8 @@ class ViewModelTest {
         movieViewModel = MovieViewModel()
         tvViewModel = TvViewModel()
         detailViewModel = DetailViewModel()
+        tv.id?.let { detailViewModel.setTvId(it) }
+        movie.id?.let{ detailViewModel.setMovieId(it)}
     }
 
     @Test
@@ -39,21 +41,21 @@ class ViewModelTest {
 
     @Test
     fun getDetailMovie() {
-        val detailMovie = detailViewModel.getDetailMovie(movie.id)
+        val detailMovie = detailViewModel.getMovieDetailById()
         assertNotNull(detailMovie)
-        assertEquals(movie.id, detailMovie?.id)
-        assertEquals(movie.title, detailMovie?.title)
-        assertEquals(movie.description, detailMovie?.description)
-        assertEquals(movie.image, detailMovie?.image)
+        assertEquals(movie.id, detailMovie.id)
+        assertEquals(movie.title, detailMovie.title)
+        assertEquals(movie.description, detailMovie.description)
+        assertEquals(movie.image, detailMovie.image)
     }
 
     @Test
     fun getDetailTv() {
-        val detailTv = detailViewModel.getDetailTv(tv.id)
+        val detailTv = detailViewModel.getTvDetailById()
         assertNotNull(detailTv)
-        assertEquals(tv.id, detailTv?.id)
-        assertEquals(tv.title, detailTv?.title)
-        assertEquals(tv.description, detailTv?.description)
-        assertEquals(tv.image, detailTv?.image)
+        assertEquals(tv.id, detailTv.id)
+        assertEquals(tv.title, detailTv.title)
+        assertEquals(tv.description, detailTv.description)
+        assertEquals(tv.image, detailTv.image)
     }
 }

@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.onirutla.submissiondicoding.R
 import com.onirutla.submissiondicoding.data.model.TvEntity
 import com.onirutla.submissiondicoding.ui.detail.DetailActivity
+import com.onirutla.submissiondicoding.ui.detail.DetailActivity.Companion.type_data
 import kotlinx.android.synthetic.main.items_tv.view.*
 
 class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
@@ -45,6 +46,7 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
                 setOnClickListener {
                     Intent(context, DetailActivity::class.java).apply {
                         putExtra("tvId", tv.id)
+                        putExtra(type_data, "tv")
                     }.run { context.startActivity(this) }
                 }
             }

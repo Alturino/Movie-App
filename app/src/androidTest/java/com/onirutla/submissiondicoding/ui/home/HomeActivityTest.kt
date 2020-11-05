@@ -1,8 +1,6 @@
 package com.onirutla.submissiondicoding.ui.home
 
-import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -20,11 +18,9 @@ import org.junit.runner.RunWith
 class HomeActivityTest {
     private val dummyMovie = DataDummy.generateDummyMovie()
     private val dummyTv = DataDummy.generateDummyTv()
-    private val intent =
-        Intent(ApplicationProvider.getApplicationContext(), HomeActivity::class.java)
 
     @get:Rule
-    var activityRule = ActivityScenarioRule<HomeActivity>(intent)
+    var activityRule = ActivityScenarioRule(HomeActivity::class.java)
 
     @Test
     fun loadMovieData() {

@@ -6,23 +6,37 @@ import com.onirutla.submissiondicoding.data.model.TvEntity
 import com.onirutla.submissiondicoding.utils.DataDummy
 
 class DetailViewModel : ViewModel() {
+    private lateinit var movieId : String
+    private lateinit var tvId :String
 
-    fun getDetailMovie(id: String?): MovieEntity?{
-        var movieEntity: MovieEntity? = null
-        val movies = DataDummy.generateDummyMovie()
+    private fun getListMovieDetail(): ArrayList<MovieEntity> = DataDummy.generateDummyMovie() as ArrayList<MovieEntity>
+
+    private fun getListTvDetail(): ArrayList<TvEntity> = DataDummy.generateDummyTv() as ArrayList<TvEntity>
+
+    fun setMovieId(movieId : String){
+        this.movieId = movieId
+    }
+
+    fun setTvId(tvId: String){
+        this.tvId = tvId
+    }
+
+    fun getMovieDetailById(): MovieEntity{
+        lateinit var movieEntity: MovieEntity
+        val movies = getListMovieDetail()
         for(movie in movies){
-            if(id == movie.id){
+            if(movie.id == movieId){
                 movieEntity = movie
             }
         }
         return movieEntity
     }
 
-    fun getDetailTv(id: String?): TvEntity? {
-        var tvEntity: TvEntity? = null
-        val tvList = DataDummy.generateDummyTv()
-        for(tv in tvList){
-            if(id == tv.id){
+    fun getTvDetailById(): TvEntity {
+        lateinit var tvEntity: TvEntity
+        val listTv = getListTvDetail()
+        for(tv in listTv){
+            if(tv.id == tvId){
                 tvEntity = tv
             }
         }
