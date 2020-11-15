@@ -5,21 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.onirutla.submissiondicoding.R
-import com.onirutla.submissiondicoding.data.model.TvEntity
+import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 import com.onirutla.submissiondicoding.ui.detail.DetailActivity
-import com.onirutla.submissiondicoding.ui.detail.DetailActivity.Companion.type_data
+import com.onirutla.submissiondicoding.utils.GlideApp
+import com.onirutla.submissiondicoding.utils.GlideOptions.placeholderOf
 import kotlinx.android.synthetic.main.items_tv.view.*
 
 class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
-    private var listTv = ArrayList<TvEntity>()
+    private var listTv = ArrayList<MovieEntity>()
 
-    fun setTv(tv: List<TvEntity>?) {
-        if (tv == null) return
+    fun setTv(tv: List<MovieEntity>) {
         this.listTv.clear()
         this.listTv.addAll(tv)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
@@ -33,20 +32,19 @@ class TvAdapter : RecyclerView.Adapter<TvAdapter.TvViewHolder>() {
     override fun getItemCount(): Int = listTv.size
 
     inner class TvViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(tv: TvEntity) {
+        fun bind(tv: MovieEntity) {
             with(itemView) {
                 tv_title.text = tv.title
                 tv_description.text = tv.description
-                Glide.with(context)
-                    .load(tv.image)
+                GlideApp.with(context)
+                    .load(tv.poster)
                     .apply(
-                        RequestOptions.placeholderOf(R.drawable.ic_broken_image_black)
+                        placeholderOf(R.drawable.ic_broken_image_black)
                             .error(R.drawable.ic_error)
                     ).into(tv_poster)
                 setOnClickListener {
                     Intent(context, DetailActivity::class.java).apply {
                         putExtra("tvId", tv.id)
-                        putExtra(type_data, "tv")
                     }.run { context.startActivity(this) }
                 }
             }

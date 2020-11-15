@@ -1,9 +1,10 @@
 package com.onirutla.submissiondicoding.ui.home.movie
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.onirutla.submissiondicoding.data.model.MovieEntity
-import com.onirutla.submissiondicoding.utils.DataDummy
+import com.onirutla.submissiondicoding.data.model.local.MovieEntity
+import com.onirutla.submissiondicoding.data.model.repository.MovieRepository
 
-class MovieViewModel : ViewModel() {
-    fun getMovies(): List<MovieEntity> = DataDummy.generateDummyMovie()
+class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+    fun getAllMovies(): LiveData<List<MovieEntity>> = movieRepository.getAllMovies()
 }

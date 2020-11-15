@@ -17,7 +17,7 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
         private val title = intArrayOf(R.string.header_movies, R.string.header_tv_show)
     }
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = title.size
 
     override fun getItem(position: Int): Fragment =
         when (position) {

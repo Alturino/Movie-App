@@ -1,45 +1,24 @@
 package com.onirutla.submissiondicoding.ui.detail
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.onirutla.submissiondicoding.data.model.MovieEntity
-import com.onirutla.submissiondicoding.data.model.TvEntity
-import com.onirutla.submissiondicoding.utils.DataDummy
+import com.onirutla.submissiondicoding.data.model.local.MovieEntity
+import com.onirutla.submissiondicoding.data.model.repository.MovieRepository
 
-class DetailViewModel : ViewModel() {
-    private lateinit var movieId : String
-    private lateinit var tvId :String
+class DetailViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
-    private fun getListMovieDetail(): ArrayList<MovieEntity> = DataDummy.generateDummyMovie() as ArrayList<MovieEntity>
+    private lateinit var movieId: String
+    private lateinit var tvShowId: String
 
-    private fun getListTvDetail(): ArrayList<TvEntity> = DataDummy.generateDummyTv() as ArrayList<TvEntity>
-
-    fun setMovieId(movieId : String){
-        this.movieId = movieId
+    fun setMovieId(id: String) {
+        this.movieId = id
     }
 
-    fun setTvId(tvId: String){
-        this.tvId = tvId
+    fun setTvId(id: String) {
+        this.tvShowId = id
     }
 
-    fun getMovieDetailById(): MovieEntity{
-        lateinit var movieEntity: MovieEntity
-        val movies = getListMovieDetail()
-        for(movie in movies){
-            if(movie.id == movieId){
-                movieEntity = movie
-            }
-        }
-        return movieEntity
-    }
+    fun getMovieDetailById(): LiveData<MovieEntity> = movieRepository.getDetailMovie(movieId)
 
-    fun getTvDetailById(): TvEntity {
-        lateinit var tvEntity: TvEntity
-        val listTv = getListTvDetail()
-        for(tv in listTv){
-            if(tv.id == tvId){
-                tvEntity = tv
-            }
-        }
-        return tvEntity
-    }
+    fun getTvShowDetailById(): LiveData<MovieEntity> = movieRepository.getDetailTvShow(tvShowId)
 }

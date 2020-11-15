@@ -1,9 +1,10 @@
 package com.onirutla.submissiondicoding.ui.home.tv
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.onirutla.submissiondicoding.data.model.TvEntity
-import com.onirutla.submissiondicoding.utils.DataDummy
+import com.onirutla.submissiondicoding.data.model.local.MovieEntity
+import com.onirutla.submissiondicoding.data.model.repository.MovieRepository
 
-class TvViewModel: ViewModel() {
-    fun getTvShow(): List<TvEntity> = DataDummy.generateDummyTv()
+class TvViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+    fun getTvShow(): LiveData<List<MovieEntity>> = movieRepository.getAllTvShows()
 }

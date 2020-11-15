@@ -5,22 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.onirutla.submissiondicoding.R
-import com.onirutla.submissiondicoding.data.model.MovieEntity
+import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 import com.onirutla.submissiondicoding.ui.detail.DetailActivity
-import com.onirutla.submissiondicoding.ui.detail.DetailActivity.Companion.type_data
+import com.onirutla.submissiondicoding.utils.GlideApp
+import com.onirutla.submissiondicoding.utils.GlideOptions.placeholderOf
 import kotlinx.android.synthetic.main.items_movie.view.*
-
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private var listMovie = ArrayList<MovieEntity>()
 
-    fun setMovie(movie: List<MovieEntity>?) {
-        if (movie == null) return
+    fun setMovie(movie: List<MovieEntity>) {
         this.listMovie.clear()
         this.listMovie.addAll(movie)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(
@@ -42,16 +40,15 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
             with(itemView) {
                 movie_title.text = movie.title
                 movie_description.text = movie.description
-                Glide.with(context)
-                    .load(movie.image)
+                GlideApp.with(context)
+                    .load(movie.poster)
                     .apply(
-                        RequestOptions.placeholderOf(R.drawable.ic_broken_image_black)
+                        placeholderOf(R.drawable.ic_broken_image_black)
                             .error(R.drawable.ic_error)
                     ).into(movie_poster)
                 setOnClickListener {
                     Intent(context, DetailActivity::class.java).apply {
                         putExtra("movieId", movie.id)
-                        putExtra(type_data, "movie")
                     }.run { context.startActivity(this) }
                 }
             }
