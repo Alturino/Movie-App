@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.onirutla.submissiondicoding">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="false"
@@ -10,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SubmissionDicoding">
-        <activity android:name=".ui.detail.DetailActivity"
+        <activity android:name=".ui.favorite.FavoriteActivity"
+            android:parentActivityName=".ui.home.HomeActivity"
+            android:theme="@style/Theme.AppCompat.Light"/>
+        <activity
+            android:name=".ui.detail.DetailActivity"
             android:label="Detail"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:parentActivityName=".ui.home.HomeActivity">
-
-        </activity>
+            android:parentActivityName=".ui.home.HomeActivity"
+            android:theme="@style/Theme.AppCompat.Light"/>
         <activity
             android:name=".ui.home.HomeActivity"
             android:label="@string/app_name"

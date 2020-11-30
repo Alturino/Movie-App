@@ -1,6 +1,8 @@
 package com.onirutla.submissiondicoding.data.model.remote
 
 import android.os.Handler
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.onirutla.submissiondicoding.utils.EspressoIdlingResource
 import com.onirutla.submissiondicoding.utils.JsonHelper
 
@@ -11,27 +13,23 @@ class RemoteDataSource(private val jsonHelper: JsonHelper) {
         const val serviceLatency: Long = 300
     }
 
-    fun getAllMovie(callback: LoadMovieCallback) {
+    fun getAllMovie(): LiveData<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
+        val resultMovie = MutableLiveData<ApiResponse<List<MovieResponse>>>()
         handler.postDelayed({
-            callback.onAllMovieReceived(jsonHelper.loadMovies())
+            resultMovie.value = ApiResponse.success(jsonHelper.loadMovies())
             EspressoIdlingResource.decrement()
         }, serviceLatency)
+        return resultMovie
     }
 
-    fun getAllTvShows(callback: LoadTvShowCallback) {
+    fun getAllTvShows(): LiveData<ApiResponse<List<MovieResponse>>> {
         EspressoIdlingResource.increment()
+        val resultTv = MutableLiveData<ApiResponse<List<MovieResponse>>>()
         handler.postDelayed({
-            callback.onAllTvShowReceived(jsonHelper.loadTvShows())
+            resultTv.value = ApiResponse.success(jsonHelper.loadTvShows())
             EspressoIdlingResource.decrement()
         }, serviceLatency)
-    }
-
-    interface LoadMovieCallback {
-        fun onAllMovieReceived(movieResponse: List<MovieResponse>)
-    }
-
-    interface LoadTvShowCallback {
-        fun onAllTvShowReceived(tvShowResponse: List<MovieResponse>)
+        return resultTv
     }
 }

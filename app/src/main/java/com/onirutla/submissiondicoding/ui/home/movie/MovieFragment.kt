@@ -11,7 +11,8 @@ import kotlinx.android.synthetic.main.fragment_movie.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
-    private val movieViewModel: MovieViewModel by viewModel()
+    private lateinit var movieAdapter : MovieAdapter
+    private val viewModel: MovieViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,10 +21,10 @@ class MovieFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val movieAdapter = MovieAdapter()
+        movieAdapter = MovieAdapter()
         activity?.let {
-            movieViewModel.getAllMovies().observe(viewLifecycleOwner, {
-                movieAdapter.setMovie(it)
+            viewModel.getAllMovies().observe(viewLifecycleOwner, {
+                movieAdapter.submitList(it.data)
                 with(rv_movie) {
                     layoutManager = LinearLayoutManager(context)
                     setHasFixedSize(true)

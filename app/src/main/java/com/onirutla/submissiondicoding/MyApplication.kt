@@ -1,6 +1,7 @@
 package com.onirutla.submissiondicoding
 
 import android.app.Application
+import com.onirutla.submissiondicoding.di.databaseModule
 import com.onirutla.submissiondicoding.di.jsonHelperModule
 import com.onirutla.submissiondicoding.di.repositoryModule
 import com.onirutla.submissiondicoding.di.viewModelModule
@@ -19,6 +20,7 @@ class MyApplication : Application() {
                 listOf(
                     jsonHelperModule,
                     repositoryModule,
+                    databaseModule,
                     viewModelModule
                 )
             )

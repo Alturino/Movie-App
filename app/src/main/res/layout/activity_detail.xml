@@ -12,19 +12,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="28dp"
+            android:contentDescription="@string/favorite"
+            android:src="@drawable/ic_favorite_24"
+            app:elevation="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@android:color/white" />
+
         <ImageView
             android:id="@+id/detail_image"
-            android:layout_width="380dp"
-            android:layout_height="380dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@string/detail_image"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/detail_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.500"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.000"
+            app:layout_constraintVertical_bias="0.303"
             tools:src="@android:color/darker_gray" />
 
         <TextView
@@ -32,12 +46,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:textAlignment="textStart"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/detail_image"
             app:layout_constraintHorizontal_bias="0.041"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/detail_image"
             app:layout_constraintTop_toBottomOf="@+id/detail_image"
             tools:text="Title" />
 
@@ -48,13 +62,22 @@
             android:layout_margin="16dp"
             android:textAlignment="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/detail_image"
+            app:layout_constraintStart_toStartOf="@+id/detail_image"
             app:layout_constraintTop_toBottomOf="@+id/detail_title"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="Description" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

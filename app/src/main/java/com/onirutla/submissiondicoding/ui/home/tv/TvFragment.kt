@@ -11,7 +11,8 @@ import kotlinx.android.synthetic.main.fragment_tv.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TvFragment : Fragment() {
-    private val tvViewModel: TvViewModel by viewModel()
+    private val viewModel: TvViewModel by viewModel()
+    private lateinit var tvAdapter: TvAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,10 +21,10 @@ class TvFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val tvAdapter = TvAdapter()
+        tvAdapter = TvAdapter()
         activity?.let {
-            tvViewModel.getTvShow().observe(viewLifecycleOwner, {
-                tvAdapter.setTv(it)
+            viewModel.getTvShow().observe(viewLifecycleOwner, {
+                tvAdapter.submitList(it.data)
                 with(rv_tv) {
                     layoutManager = LinearLayoutManager(context)
                     setHasFixedSize(true)

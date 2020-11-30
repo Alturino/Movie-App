@@ -1,4 +1,4 @@
-package com.onirutla.submissiondicoding.ui.util
+package com.onirutla.submissiondicoding.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

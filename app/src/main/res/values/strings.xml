@@ -2,6 +2,6 @@
     <string name="app_name">Submission Dicoding</string>
     <string name="header_movies">Movies</string>
     <string name="header_tv_show">TV Show</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="detail_image">Detail Image</string>
+    <string name="favorite">Favorite</string>
 </resources>

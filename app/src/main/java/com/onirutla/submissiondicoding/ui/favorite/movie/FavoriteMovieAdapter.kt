@@ -1,4 +1,4 @@
-package com.onirutla.submissiondicoding.ui.home.movie
+package com.onirutla.submissiondicoding.ui.favorite.movie
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -12,14 +12,13 @@ import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 import com.onirutla.submissiondicoding.ui.detail.DetailActivity
 import com.onirutla.submissiondicoding.ui.detail.DetailActivity.Companion.movie_id
 import com.onirutla.submissiondicoding.utils.GlideApp
-import com.onirutla.submissiondicoding.utils.GlideOptions.placeholderOf
+import com.onirutla.submissiondicoding.utils.GlideOptions
 import kotlinx.android.synthetic.main.items_movie.view.*
 
-class MovieAdapter internal constructor(): PagedListAdapter<MovieEntity, MovieAdapter.MovieViewHolder>(
-    DIFF_CALLBACK) {
-
-    companion object{
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>(){
+class FavoriteMovieAdapter :
+    PagedListAdapter<MovieEntity, FavoriteMovieAdapter.FavoriteMovieViewHolder>(DIFF_CALLBACK) {
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
             override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean =
                 oldItem.id == newItem.id
 
@@ -32,19 +31,22 @@ class MovieAdapter internal constructor(): PagedListAdapter<MovieEntity, MovieAd
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MovieAdapter.MovieViewHolder {
+    ): FavoriteMovieAdapter.FavoriteMovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.items_movie, parent, false)
-        return MovieViewHolder(view)
+        return FavoriteMovieViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MovieAdapter.MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: FavoriteMovieAdapter.FavoriteMovieViewHolder,
+        position: Int
+    ) {
         val movie = getItem(position)
         movie?.let {
-            holder.bind(it)
+            holder.bind(movie)
         }
     }
 
-    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: MovieEntity) {
             with(itemView) {
                 movie_title.text = movie.title
@@ -52,7 +54,7 @@ class MovieAdapter internal constructor(): PagedListAdapter<MovieEntity, MovieAd
                 GlideApp.with(context)
                     .load(movie.poster)
                     .apply(
-                        placeholderOf(R.drawable.ic_broken_image_black)
+                        GlideOptions.placeholderOf(R.drawable.ic_broken_image_black)
                             .error(R.drawable.ic_error)
                     ).into(movie_poster)
                 setOnClickListener {

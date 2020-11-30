@@ -3,9 +3,10 @@ package com.onirutla.submissiondicoding.ui.home.movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 import com.onirutla.submissiondicoding.data.model.repository.MovieRepository
-import com.onirutla.submissiondicoding.utils.DataDummy
+import com.onirutla.submissiondicoding.utils.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -28,7 +29,10 @@ class MovieViewModelTest {
     private lateinit var movieRepository: MovieRepository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieEntity>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MovieEntity>
 
     @Before
     fun setUp() {
@@ -36,18 +40,19 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun getMovies() {
-        val dummyMovie = DataDummy.generateDummyMovie()
-        val movie = MutableLiveData<List<MovieEntity>>()
-        movie.value = dummyMovie
+    fun getMovie() {
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(5)
+        val movieData = MutableLiveData<Resource<PagedList<MovieEntity>>>()
+        movieData.value = dummyMovies
 
-        `when`(movieRepository.getAllMovies()).thenReturn(movie)
-        val movieResponse = viewModel.getAllMovies().value
+        `when`(movieRepository.getAllMovies()).thenReturn(movieData)
+        val movieTest = viewModel.getAllMovies().value?.data
         verify(movieRepository).getAllMovies()
-        assertNotNull(movieResponse)
-        assertEquals(10, movieResponse?.size)
+        assertNotNull(movieTest)
+        assertEquals(5, movieTest?.size)
 
         viewModel.getAllMovies().observeForever(observer)
-        verify(observer).onChanged(dummyMovie)
+        verify(observer).onChanged(dummyMovies)
     }
 }

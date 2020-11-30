@@ -1,4 +1,4 @@
-package com.onirutla.submissiondicoding.ui.home
+package com.onirutla.submissiondicoding.ui.favorite
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.onirutla.submissiondicoding.R
-import com.onirutla.submissiondicoding.ui.home.movie.MovieFragment
-import com.onirutla.submissiondicoding.ui.home.tv.TvFragment
+import com.onirutla.submissiondicoding.ui.favorite.movie.FavoriteMovieFragment
+import com.onirutla.submissiondicoding.ui.favorite.tv.FavoriteTvFragment
 
-class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
+class FavoriteSectionsPagerAdapter (private val mContext: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     companion object {
@@ -21,8 +21,8 @@ class SectionsPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment =
         when (position) {
-            0 -> MovieFragment()
-            1 -> TvFragment()
+            0 -> FavoriteMovieFragment()
+            1 -> FavoriteTvFragment()
             else -> Fragment()
         }
 
