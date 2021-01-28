@@ -6,8 +6,12 @@ import com.onirutla.submissiondicoding.data.model.remote.ApiResponse
 import com.onirutla.submissiondicoding.utils.AppExecutors
 import com.onirutla.submissiondicoding.utils.vo.Resource
 import com.onirutla.submissiondicoding.utils.vo.StatusResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-abstract class NetworkBoundResource<ResultType, RequestType>(private val executors: AppExecutors) {
+abstract class NetworkBoundResource<ResultType, RequestType>{
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
@@ -45,16 +49,16 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val executo
 
             when (response.status) {
                 StatusResponse.SUCCESS -> {
-                    executors.diskIO().execute {
+                    CoroutineScope(Dispatchers.IO).launch {
                         saveCallResult(response.body)
-                        executors.mainThread().execute {
+                        withContext(Dispatchers.Main) {
                             result.addSource(loadFromDb()) { newData ->
                                 result.value = Resource.success(newData)
                             }
                         }
                     }
                 }
-                StatusResponse.EMPTY -> executors.mainThread().execute {
+                StatusResponse.EMPTY -> CoroutineScope(Dispatchers.Main).launch {
                     result.addSource(loadFromDb()) { newData ->
                         result.value = Resource.success(newData)
                     }

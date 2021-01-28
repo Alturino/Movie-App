@@ -24,7 +24,7 @@ val repositoryModule = module {
     single { LocalDataSource(get()) }
     single { RemoteDataSource(get()) }
     factory { AppExecutors() }
-    single { MovieRepository(get(), get(), get()) }
+    single { MovieRepository(get(), get()) }
 }
 
 val databaseModule = module {

@@ -10,16 +10,17 @@ import com.onirutla.submissiondicoding.data.model.remote.RemoteDataSource
 import com.onirutla.submissiondicoding.data.source.LocalDataSource
 import com.onirutla.submissiondicoding.data.source.MovieDataSource
 import com.onirutla.submissiondicoding.data.source.NetworkBoundResource
-import com.onirutla.submissiondicoding.utils.AppExecutors
 import com.onirutla.submissiondicoding.utils.vo.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MovieRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val appExecutors: AppExecutors
 ) : MovieDataSource {
     override fun getAllMovies(): LiveData<Resource<PagedList<MovieEntity>>> =
-        object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
+        object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>() {
             override fun loadFromDb(): LiveData<PagedList<MovieEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
@@ -57,7 +58,7 @@ class MovieRepository(
 
 
     override fun getAllTv(): LiveData<Resource<PagedList<MovieEntity>>> =
-        object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>(appExecutors) {
+        object : NetworkBoundResource<PagedList<MovieEntity>, List<MovieResponse>>() {
             override fun loadFromDb(): LiveData<PagedList<MovieEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
@@ -95,7 +96,7 @@ class MovieRepository(
         }.asLiveData()
 
     override fun getDetailMovie(id: String): LiveData<Resource<MovieEntity>> =
-        object : NetworkBoundResource<MovieEntity, List<MovieResponse>>(appExecutors) {
+        object : NetworkBoundResource<MovieEntity, List<MovieResponse>>() {
             override fun loadFromDb(): LiveData<MovieEntity> =
                 localDataSource.getMovieDetail(id)
 
@@ -127,7 +128,7 @@ class MovieRepository(
 
 
     override fun getDetailTv(id: String): LiveData<Resource<MovieEntity>> =
-        object : NetworkBoundResource<MovieEntity, List<MovieResponse>>(appExecutors) {
+        object : NetworkBoundResource<MovieEntity, List<MovieResponse>>() {
             override fun loadFromDb(): LiveData<MovieEntity> =
                 localDataSource.getTvDetail(id)
 
@@ -175,6 +176,7 @@ class MovieRepository(
         return LivePagedListBuilder(localDataSource.getFavoriteTv(), config).build()
     }
 
-    override fun setFavoriteMovie(movie: MovieEntity, state: Boolean) =
-        appExecutors.diskIO().execute { localDataSource.setFavorite(movie, state) }
+    override fun setFavoriteMovie(movie: MovieEntity, state: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch { localDataSource.setFavorite(movie, state) }
+    }
 }
