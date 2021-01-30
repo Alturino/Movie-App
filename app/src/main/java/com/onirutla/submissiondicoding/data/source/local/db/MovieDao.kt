@@ -1,4 +1,4 @@
-package com.onirutla.submissiondicoding.db
+package com.onirutla.submissiondicoding.data.source.local.db
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource

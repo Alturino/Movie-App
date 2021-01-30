@@ -1,8 +1,10 @@
-package com.onirutla.submissiondicoding.data.model.remote
+package com.onirutla.submissiondicoding.data.source.remote
 
 import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.onirutla.submissiondicoding.data.model.remote.ApiResponse
+import com.onirutla.submissiondicoding.data.model.remote.MovieResponse
 import com.onirutla.submissiondicoding.utils.EspressoIdlingResource
 import com.onirutla.submissiondicoding.utils.JsonHelper
 

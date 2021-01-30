@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.onirutla.submissiondicoding.data.model.local.MovieEntity
-import com.onirutla.submissiondicoding.data.model.repository.MovieRepository
+import com.onirutla.submissiondicoding.data.source.repository.MovieRepository
 import com.onirutla.submissiondicoding.utils.vo.Resource
 
 class DetailViewModel(private val movieRepository: MovieRepository) : ViewModel() {

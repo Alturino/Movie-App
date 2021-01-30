@@ -1,4 +1,4 @@
-package com.onirutla.submissiondicoding.data.model.repository
+package com.onirutla.submissiondicoding.data.source.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
@@ -6,10 +6,11 @@ import androidx.paging.PagedList
 import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 import com.onirutla.submissiondicoding.data.model.remote.ApiResponse
 import com.onirutla.submissiondicoding.data.model.remote.MovieResponse
-import com.onirutla.submissiondicoding.data.model.remote.RemoteDataSource
-import com.onirutla.submissiondicoding.data.source.LocalDataSource
+
 import com.onirutla.submissiondicoding.data.source.MovieDataSource
 import com.onirutla.submissiondicoding.data.source.NetworkBoundResource
+import com.onirutla.submissiondicoding.data.source.local.LocalDataSource
+import com.onirutla.submissiondicoding.data.source.remote.RemoteDataSource
 import com.onirutla.submissiondicoding.utils.vo.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,7 @@ class MovieRepository(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllMovie(), config).build()
+                return LivePagedListBuilder(localDataSource.getMovieList(), config).build()
             }
 
             override fun shouldFetch(data: PagedList<MovieEntity>?): Boolean =
@@ -65,7 +66,7 @@ class MovieRepository(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllTv(), config).build()
+                return LivePagedListBuilder(localDataSource.getTvList(), config).build()
             }
 
             override fun shouldFetch(data: PagedList<MovieEntity>?): Boolean =
@@ -91,7 +92,7 @@ class MovieRepository(
                     )
                     tvShowList.add(tvShow)
                 }
-                localDataSource.insertMovies(tvShowList)
+                CoroutineScope(Dispatchers.IO).launch { localDataSource.insertMovies(tvShowList) }
             }
         }.asLiveData()
 
@@ -122,7 +123,8 @@ class MovieRepository(
                     )
                     movieList.add(movie)
                 }
-                localDataSource.insertMovies(movieList)
+                CoroutineScope(Dispatchers.IO).launch { localDataSource.insertMovies(movieList) }
+
             }
         }.asLiveData()
 
@@ -154,7 +156,9 @@ class MovieRepository(
                     )
                     tvShowList.add(tvShow)
                 }
-                localDataSource.insertMovies(tvShowList)
+                CoroutineScope(Dispatchers.IO).launch {
+                    localDataSource.insertMovies(tvShowList)
+                }
             }
         }.asLiveData()
 
@@ -177,6 +181,6 @@ class MovieRepository(
     }
 
     override fun setFavoriteMovie(movie: MovieEntity, state: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch { localDataSource.setFavorite(movie, state) }
+        localDataSource.setFavorite(movie, state)
     }
 }
