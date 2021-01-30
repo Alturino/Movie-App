@@ -8,7 +8,7 @@ import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 @Dao
 interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovies(movies: List<MovieEntity>)
+    suspend fun insertMovies(movies: List<MovieEntity>)
 
     @Query("SELECT * FROM movie_entities WHERE type = 'movie'")
     fun getMovieList(): DataSource.Factory<Int, MovieEntity>
@@ -29,5 +29,5 @@ interface MovieDao {
     fun getFavoriteTv(): DataSource.Factory<Int, MovieEntity>
 
     @Update
-    fun setFavorite(movie: MovieEntity)
+    suspend fun setFavorite(movie: MovieEntity)
 }

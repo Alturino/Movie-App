@@ -1,12 +1,10 @@
 package com.onirutla.submissiondicoding.ui.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.onirutla.submissiondicoding.data.model.local.MovieEntity
 import com.onirutla.submissiondicoding.data.source.repository.MovieRepository
 import com.onirutla.submissiondicoding.utils.vo.Resource
+import kotlinx.coroutines.launch
 
 class DetailViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
@@ -16,20 +14,21 @@ class DetailViewModel(private val movieRepository: MovieRepository) : ViewModel(
     fun setFavorite() {
         val resourceMovie = movie.value
         val resourceTvShow = tv.value
-
-        resourceMovie?.let {
-            val movieData = it.data
-            movieData?.let {
-                val newState = !movieData.is_favorite
-                movieRepository.setFavoriteMovie(movieData, newState)
+        viewModelScope.launch {
+            resourceMovie?.let {
+                val movieData = it.data
+                movieData?.let {
+                    val newState = !movieData.is_favorite
+                    movieRepository.setFavoriteMovie(movieData, newState)
+                }
             }
-        }
 
-        resourceTvShow?.let {
-            val tvShowData = it.data
-            tvShowData?.let {
-                val newState = !tvShowData.is_favorite
-                movieRepository.setFavoriteMovie(tvShowData, newState)
+            resourceTvShow?.let {
+                val tvShowData = it.data
+                tvShowData?.let {
+                    val newState = !tvShowData.is_favorite
+                    movieRepository.setFavoriteMovie(tvShowData, newState)
+                }
             }
         }
     }

@@ -8,7 +8,6 @@ import com.onirutla.submissiondicoding.utils.vo.StatusResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 abstract class NetworkBoundResource<ResultType, RequestType> {
     private val result = MediatorLiveData<Resource<ResultType>>()
@@ -20,7 +19,9 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
         result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
             if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource)
+                CoroutineScope(Dispatchers.IO).launch {
+                    fetchFromNetwork(dbSource)
+                }
             } else {
                 result.addSource(dbSource) { newData ->
                     result.value = Resource.success(newData)
@@ -33,9 +34,9 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     protected abstract fun loadFromDb(): LiveData<ResultType>
     protected abstract fun shouldFetch(data: ResultType?): Boolean
     protected abstract fun createCall(): LiveData<ApiResponse<RequestType>>
-    protected abstract fun saveCallResult(data: RequestType)
+    protected abstract suspend fun saveCallResult(data: RequestType)
 
-    private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
+    private suspend fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
         val apiResponse = createCall()
 
         result.addSource(dbSource) { newData ->
@@ -45,28 +46,25 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
             result.removeSource(dbSource)
-
-            when (response.status) {
-                StatusResponse.SUCCESS -> {
-                    CoroutineScope(Dispatchers.IO).launch {
+            suspend {
+                when (response.status) {
+                    StatusResponse.SUCCESS -> {
                         saveCallResult(response.body)
-                        withContext(Dispatchers.Main) {
-                            result.addSource(loadFromDb()) { newData ->
-                                result.value = Resource.success(newData)
-                            }
-                        }
-                    }
-                }
-                StatusResponse.EMPTY ->
-                    CoroutineScope(Dispatchers.Main).launch {
                         result.addSource(loadFromDb()) { newData ->
                             result.value = Resource.success(newData)
                         }
                     }
-                StatusResponse.ERROR -> {
-                    onFetchFailed()
-                    result.addSource(dbSource) { newData ->
-                        result.value = Resource.error(response.message, newData)
+                    StatusResponse.EMPTY ->
+
+                        result.addSource(loadFromDb()) { newData ->
+                            result.value = Resource.success(newData)
+                        }
+
+                    StatusResponse.ERROR -> {
+                        onFetchFailed()
+                        result.addSource(dbSource) { newData ->
+                            result.value = Resource.error(response.message, newData)
+                        }
                     }
                 }
             }

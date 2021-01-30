@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
                         progress_bar.visibility = View.GONE
                         populateView(tvShow)
                     }
-                    Status.ERORR -> {
+                    Status.ERROR -> {
                         progress_bar.visibility = View.GONE
                         Toast.makeText(
                             applicationContext,
@@ -55,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
                         progress_bar.visibility = View.GONE
                         populateView(movie)
                     }
-                    Status.ERORR -> {
+                    Status.ERROR -> {
                         progress_bar.visibility = View.GONE
                         Toast.makeText(
                             applicationContext,

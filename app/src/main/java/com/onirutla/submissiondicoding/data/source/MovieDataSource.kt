@@ -12,5 +12,5 @@ interface MovieDataSource {
     fun getDetailTv(id: String): LiveData<Resource<MovieEntity>>
     fun getFavoriteMovie(): LiveData<PagedList<MovieEntity>>
     fun getFavoriteTvShow(): LiveData<PagedList<MovieEntity>>
-    fun setFavoriteMovie(movie: MovieEntity, state: Boolean)
+    suspend fun setFavoriteMovie(movie: MovieEntity, state: Boolean)
 }
